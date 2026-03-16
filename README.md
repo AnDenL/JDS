@@ -2,15 +2,15 @@
 
 ---
 
-##Features
+## Features
 
-*Direct to ASM: Compiles straight to x86_64 NASM assembly.
+* Direct to ASM: Compiles straight to x86_64 NASM assembly.
 
-*Clean Syntax: Intuitive and easy-to-read syntax (let, if, while).
+* Clean Syntax: Intuitive and easy-to-read syntax (let, if, while).
 
-*I/O Operations: Simple console printing and user input (print, input).
+* I/O Operations: Simple console printing and user input (print, input).
 
-*Dynamic Execution: Compile modules as raw .bin files and load them directly into memory at runtime using the exec statement(for now pretty useless).
+* Dynamic Execution: Compile modules as raw .bin files and load them directly into memory at runtime using the exec statement(for now pretty useless).
 
 ---
 
