@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JDS Language Documentation</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --text-color: #e2e8f0;
+            --sidebar-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --code-bg: #0b1120;
+            --border-color: #334155;
+            --hover-bg: #334155;
+            --keyword-color: #c678dd;
+            --string-color: #98c379;
+            --number-color: #d19a66;
+            --comment-color: #5c6370;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+            text-align: center;
+        }
+
+        .nav-links { list-style: none; }
+        .nav-links li { margin-bottom: 0.5rem; }
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .nav-links a:hover {
+            background-color: var(--hover-bg);
+            color: var(--accent-color);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 3rem 4rem;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .m {
+            max-width: 850px;
+            width: 100%;
+        }
+
+        .header-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 2rem;
+        }
+
+        .lang-switch {
+            background-color: var(--sidebar-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .lang-switch:hover { background-color: var(--hover-bg); border-color: var(--accent-color); }
+
+        h1 { font-size: 2.5rem; margin-bottom: 1rem; color: #fff; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
+        h2 { font-size: 1.8rem; margin-top: 2.5rem; margin-bottom: 1rem; color: var(--accent-color); }
+        h3 { font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        p { margin-bottom: 1rem; }
+        
+        /* Code Blocks */
+        pre {
+            background-color: var(--code-bg);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+        }
+        code { font-family: 'Courier New', Courier, monospace; }
+        p > code, li > code {
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.3rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .kw { color: var(--keyword-color); font-weight: bold; }
+        .str { color: var(--string-color); }
+        .num { color: var(--number-color); }
+        .com { color: var(--comment-color); font-style: italic; }
+
+        ul { margin-left: 1.5rem; margin-bottom: 1rem; }
+
+        .lang-section { display: none; }
+        .lang-section.active { display: block; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border-color); }
+            .main-content { margin-left: 0; padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2>JDS Docs</h2>
+        <ul class="nav-links">
+            <li><a href="#intro" class="nav-text" data-en="Introduction" data-uk="Вступ">Introduction</a></li>
+            <li><a href="#usage" class="nav-text" data-en="Usage & Compilation" data-uk="Використання та компіляція">Usage & Compilation</a></li>
+            <li><a href="#basics" class="nav-text" data-en="Syntax Basics" data-uk="Основи синтаксису">Syntax Basics</a></li>
+            <li><a href="#control" class="nav-text" data-en="Control Flow" data-uk="Керування потоком">Control Flow</a></li>
+            <li><a href="#io" class="nav-text" data-en="Input / Output" data-uk="Введення / Виведення">Input / Output</a></li>
+            <li><a href="#modules" class="nav-text" data-en="Modules & Exec" data-uk="Модулі та Exec">Modules & Exec</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="m">
+        <div class="header-controls">
+            <button class="lang-switch" onclick="toggleLanguage()">🇬🇧 EN / 🇺🇦 UK</button>
+        </div>
+
+        <!-- ENGLISH CONTENT -->
+        <div id="content-en" class="lang-section active">
+            <h1 id="intro">JDS Programming Language</h1>
+            <p>Welcome to the official documentation for <strong>JDS</strong>. JDS is a compiled, statically-structured scripting language that compiles directly into x86_64 assembly (NASM) for Linux.</p>
+            <p>It features a clean syntax, standard mathematical operations with operator precedence, control flow statements, and built-in I/O capabilities. JDS also supports modular execution, allowing you to load and execute raw binary files directly into memory.</p>
+
+            <h2 id="usage">Usage & Compilation</h2>
+            <p>The compiler requires your source files to have the <code>.jds</code> extension.</p>
+            <pre><code><span class="com"># Compile a standard program</span>
+./compiler main.jds
+
+<span class="com"># This generates an ELF64 executable</span>
+./main</code></pre>
+
+            <h2 id="basics">Syntax Basics</h2>
+            
+            <h3>Comments</h3>
+            <p>JDS supports single-line comments using double slashes.</p>
+            <pre><code><span class="com">// This is a comment and will be ignored by the lexer</span></code></pre>
+
+            <h3>Variables & Data Types</h3>
+            <p>Variables are declared using the <code>let</code> keyword. In JDS, variables are implicitly 64-bit integers. You can declare them with or without an initial value.</p>
+            <pre><code><span class="kw">let</span> x = <span class="num">10</span>
+<span class="kw">let</span> y
+y = <span class="num">20</span></code></pre>
+
+            <h3>Arithmetic Expressions</h3>
+            <p>JDS supports standard arithmetic operations: addition (<code>+</code>), subtraction (<code>-</code>), multiplication (<code>*</code>), and division (<code>/</code>). Multiplication and division have a higher precedence than addition and subtraction.</p>
+            <pre><code><span class="kw">let</span> result = <span class="num">10</span> + <span class="num">5</span> * <span class="num">2</span>  <span class="com">// result is 20</span>
+<span class="kw">let</span> div = <span class="num">20</span> / <span class="num">4</span>         <span class="com">// div is 5</span></code></pre>
+
+            <h2 id="control">Control Flow</h2>
+
+            <h3>If / Elif / Else Statements</h3>
+            <p>Conditional logic uses standard blocks surrounded by curly braces <code>{}</code>. Supported comparison operators are <code>==</code>, <code>&lt;</code>, and <code>&gt;</code>.</p>
+            <pre><code><span class="kw">let</span> a = <span class="num">15</span>
+
+<span class="kw">if</span> a &lt; <span class="num">10</span> {
+    <span class="kw">print</span> <span class="str">"Less than 10"</span>
+} <span class="kw">elif</span> a == <span class="num">15</span> {
+    <span class="kw">print</span> <span class="str">"Exactly 15"</span>
+} <span class="kw">else</span> {
+    <span class="kw">print</span> <span class="str">"Greater than 10"</span>
+}</code></pre>
+
+            <h3>While Loops</h3>
+            <p>Loops in JDS are implemented using the <code>while</code> keyword.</p>
+            <pre><code><span class="kw">let</span> count = <span class="num">5</span>
+<span class="kw">while</span> count &gt; <span class="num">0</span> {
+    <span class="kw">print</span> count
+    count = count - <span class="num">1</span>
+}</code></pre>
+
+            <h2 id="io">Input / Output & System</h2>
+
+            <h3>Printing</h3>
+            <p>Use the <code>print</code> keyword to output text or variables. String literals support escape sequences like <code>\n</code>, <code>\t</code>, and <code>\"</code>.</p>
+            <pre><code><span class="kw">print</span> <span class="str">"Hello, World!\n"</span>
+<span class="kw">let</span> score = <span class="num">100</span>
+<span class="kw">print</span> score</code></pre>
+
+            <h3>Input</h3>
+            <p>The <code>input</code> keyword reads an integer from standard input and stores it in a variable.</p>
+            <pre><code><span class="kw">let</span> user_input
+<span class="kw">input</span> user_input
+<span class="kw">print</span> <span class="str">"You entered:"</span>
+<span class="kw">print</span> user_input</code></pre>
+
+            <h3>Exit</h3>
+            <p>You can forcefully terminate the program and return an exit code to the operating system using <code>exit</code>.</p>
+            <pre><code><span class="kw">exit</span> <span class="num">0</span>  <span class="com">// Exit with success code</span></code></pre>
+
+            <h3>Built-in Variables</h3>
+            <p><code>argc</code> is a built-in variable that holds the number of command-line arguments passed to the program.</p>
+            <pre><code><span class="kw">print</span> <span class="str">"Argument count:"</span>
+<span class="kw">print</span> argc</code></pre>
+
+            <h2 id="modules">Modules & Exec</h2>
+
+            <h3>Defining a Module</h3>
+            <p>If a file starts with the <code>module</code> keyword, it is compiled as a raw binary module instead of a standalone ELF executable. This is useful for writing dynamic code to be loaded later.</p>
+            <pre><code><span class="kw">module</span>
+<span class="kw">print</span> <span class="str">"I am a dynamically loaded module!"</span>
+<span class="kw">exit</span> <span class="num">0</span></code></pre>
+
+            <h3>Executing Binaries in Memory</h3>
+            <p>The <code>exec</code> statement allows the program to read a raw binary file from disk, map it directly into executable memory, and call it. This acts as a highly efficient plugin or script execution system.</p>
+            <pre><code><span class="com">// Loads "script.bin" into memory and executes it</span>
+<span class="kw">exec</span> <span class="str">"script.bin"</span></code></pre>
+        </div>
+
+        <!-- UKRAINIAN CONTENT -->
+        <div id="content-uk" class="lang-section">
+            <h1 id="intro-uk">Мова програмування JDS</h1>
+            <p>Вітаємо в офіційній документації для <strong>JDS</strong>. JDS — це компільована скриптова мова зі статичною структурою, яка компілюється безпосередньо в асемблер x86_64 (NASM) для Linux.</p>
+            <p>Вона має чистий синтаксис, стандартні математичні операції з пріоритетом операторів, конструкції керування потоком та вбудовані можливості вводу/виводу. JDS також підтримує модульне виконання, що дозволяє завантажувати та виконувати сирі бінарні файли прямо в пам'яті.</p>
+
+            <h2 id="usage-uk">Використання та компіляція</h2>
+            <p>Компілятор вимагає, щоб ваші файли мали розширення <code>.jds</code>.</p>
+            <pre><code><span class="com"># Компіляція стандартної програми</span>
+./compiler main.jds
+
+<span class="com"># Це згенерує виконуваний файл ELF64</span>
+./main</code></pre>
+
+            <h2 id="basics-uk">Основи синтаксису</h2>
+            
+            <h3>Коментарі</h3>
+            <p>JDS підтримує однорядкові коментарі, використовуючи подвійний слеш.</p>
+            <pre><code><span class="com">// Це коментар, він буде проігнорований лексером</span></code></pre>
+
+            <h3>Змінні та типи даних</h3>
+            <p>Змінні оголошуються за допомогою ключового слова <code>let</code>. У JDS змінні є неявно 64-бітними цілими числами. Ви можете оголошувати їх з початковим значенням або без нього.</p>
+            <pre><code><span class="kw">let</span> x = <span class="num">10</span>
+<span class="kw">let</span> y
+y = <span class="num">20</span></code></pre>
+
+            <h3>Арифметичні вирази</h3>
+            <p>JDS підтримує стандартні арифметичні операції: додавання (<code>+</code>), віднімання (<code>-</code>), множення (<code>*</code>) та ділення (<code>/</code>). Множення та ділення мають вищий пріоритет, ніж додавання та віднімання.</p>
+            <pre><code><span class="kw">let</span> result = <span class="num">10</span> + <span class="num">5</span> * <span class="num">2</span>  <span class="com">// result дорівнює 20</span>
+<span class="kw">let</span> div = <span class="num">20</span> / <span class="num">4</span>         <span class="com">// div дорівнює 5</span></code></pre>
+
+            <h2 id="control-uk">Керування потоком</h2>
+
+            <h3>Конструкції If / Elif / Else</h3>
+            <p>Логічні умови використовують стандартні блоки, оточені фігурними дужками <code>{}</code>. Підтримувані оператори порівняння: <code>==</code>, <code>&lt;</code> та <code>&gt;</code>.</p>
+            <pre><code><span class="kw">let</span> a = <span class="num">15</span>
+
+<span class="kw">if</span> a &lt; <span class="num">10</span> {
+    <span class="kw">print</span> <span class="str">"Менше ніж 10"</span>
+} <span class="kw">elif</span> a == <span class="num">15</span> {
+    <span class="kw">print</span> <span class="str">"Рівно 15"</span>
+} <span class="kw">else</span> {
+    <span class="kw">print</span> <span class="str">"Більше ніж 10"</span>
+}</code></pre>
+
+            <h3>Цикли While</h3>
+            <p>Цикли в JDS реалізуються за допомогою ключового слова <code>while</code>.</p>
+            <pre><code><span class="kw">let</span> count = <span class="num">5</span>
+<span class="kw">while</span> count &gt; <span class="num">0</span> {
+    <span class="kw">print</span> count
+    count = count - <span class="num">1</span>
+}</code></pre>
+
+            <h2 id="io-uk">Введення / Виведення та Система</h2>
+
+            <h3>Виведення (Print)</h3>
+            <p>Використовуйте ключове слово <code>print</code> для виведення тексту або змінних. Рядкові літерали підтримують escape-послідовності, такі як <code>\n</code>, <code>\t</code> та <code>\"</code>.</p>
+            <pre><code><span class="kw">print</span> <span class="str">"Привіт, світе!\n"</span>
+<span class="kw">let</span> score = <span class="num">100</span>
+<span class="kw">print</span> score</code></pre>
+
+            <h3>Введення (Input)</h3>
+            <p>Ключове слово <code>input</code> зчитує ціле число зі стандартного вводу і зберігає його у змінну.</p>
+            <pre><code><span class="kw">let</span> user_input
+<span class="kw">input</span> user_input
+<span class="kw">print</span> <span class="str">"Ви ввели:"</span>
+<span class="kw">print</span> user_input</code></pre>
+
+            <h3>Вихід (Exit)</h3>
+            <p>Ви можете примусово завершити програму та повернути код завершення операційній системі за допомогою <code>exit</code>.</p>
+            <pre><code><span class="kw">exit</span> <span class="num">0</span>  <span class="com">// Завершення з кодом успіху</span></code></pre>
+
+            <h3>Вбудовані змінні</h3>
+            <p><code>argc</code> — це вбудована змінна, яка містить кількість аргументів командного рядка, переданих програмі.</p>
+            <pre><code><span class="kw">print</span> <span class="str">"Кількість аргументів:"</span>
+<span class="kw">print</span> argc</code></pre>
+
+            <h2 id="modules-uk">Модулі та Exec</h2>
+
+            <h3>Визначення модуля</h3>
+            <p>Якщо файл починається з ключового слова <code>module</code>, він компілюється як сирий (raw) бінарний модуль замість самостійного ELF файлу. Це корисно для написання динамічного коду, який завантажується пізніше.</p>
+            <pre><code><span class="kw">module</span>
+<span class="kw">print</span> <span class="str">"Я — динамічно завантажений модуль!"</span>
+<span class="kw">exit</span> <span class="num">0</span></code></pre>
+
+            <h3>Виконання бінарних файлів у пам'яті</h3>
+            <p>Інструкція <code>exec</code> дозволяє програмі зчитувати сирий бінарний файл з диска, відображати його безпосередньо у виконувану пам'ять (mmap) і викликати. Це працює як високоефективна система плагінів.</p>
+            <pre><code><span class="com">// Завантажує "script.bin" в пам'ять і виконує його</span>
+<span class="kw">exec</span> <span class="str">"script.bin"</span></code></pre>
+        </div>
+        </div>
+    </main>
+
+    <script>
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'uk' : 'en';
+            
+            // Switch content sections
+            document.getElementById('content-en').classList.toggle('active');
+            document.getElementById('content-uk').classList.toggle('active');
+
+            // Switch navigation text
+            const navLinks = document.querySelectorAll('.nav-text');
+            navLinks.forEach(link => {
+                link.textContent = link.getAttribute(`data-${currentLang}`);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "name": "jds-lang",
+  "displayName": "JDS Language Support",
+  "description": "Syntax highlighting and snippets for JDS language",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "jds",
+        "aliases": ["JDS", "jds"],
+        "extensions": [".jds"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "jds",
+        "scopeName": "source.jds",
+        "path": "./syntaxes/jds.tmLanguage.json"
+      }
+    ]
+  }
+}

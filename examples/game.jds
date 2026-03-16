@@ -1,0 +1,43 @@
+print "=== Dragon simulator ===" 
+print "Protect your gold from the knights!"
+
+let dragon_hp = 500
+let gold = 1000
+let knights = 3
+
+while knights > 0 {
+    print "Knights left: "
+    print knights
+    print "Your health: "
+    print dragon_hp
+    print "Stock of gold: "
+    print gold
+    print ""
+
+    print "Enter the power of fire breath (costs gold, enter a number):"
+    let fire_power = 0
+    input fire_power 
+
+    if fire_power > gold {
+        print "Not enough gold for such an attack!"
+    } elif fire_power == 0 {
+        print "You missed a move.!"
+    } else {
+        gold = gold - fire_power
+        knights = knights - 1
+        print "You burned the knight to ashes!"
+    }
+
+    if knights > 0 {
+        dragon_hp = dragon_hp - 50
+        print "Knights deal 50 damage."
+    }
+
+    if dragon_hp < 1 {
+        print "You have been defeated... The treasury has been plundered."
+        exit 1 
+    }
+}
+
+print "Victory! You have successfully defended the treasury."
+exit 0

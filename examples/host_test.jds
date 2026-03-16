@@ -1,0 +1,6 @@
+print "Host starting..."
+let a = 0
+exec "/home/andenl/Documents/GitHub/jds/Hello.bin"
+print a
+print "Host finished!"
+exit 0

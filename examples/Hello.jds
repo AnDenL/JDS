@@ -1,0 +1,4 @@
+module
+print "Hello from dynamically loaded module!"
+let a = 314
+print a
