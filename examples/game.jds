@@ -39,5 +39,5 @@ while knights > 0 {
     }
 }
 
-print "Victory! You have successfully defended the treasury."
+println "Victory! You have successfully defended the treasury."
 exit 0

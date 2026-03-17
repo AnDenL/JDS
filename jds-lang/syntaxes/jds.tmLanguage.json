@@ -20,7 +20,7 @@
     "keywords": {
       "patterns": [
         {
-          "match": "\\b(let|if|elif|else|while|exit|print|input|exec|module)\\b",
+          "match": "\\b(let|if|elif|else|while|exit|print|println|input|exec|module)\\b",
           "name": "keyword.control.jds"
         },
         {
@@ -52,7 +52,7 @@
     "operators": {
       "patterns": [
         {
-          "match": "==|<|>|=|\\+|-|\\*|/",
+          "match": "==|<|>|=|\\+|-|\\*|/|%",
           "name": "keyword.operator.jds"
         }
       ]
