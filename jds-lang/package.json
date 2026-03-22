@@ -1,13 +1,19 @@
 {
   "name": "jds-lang",
+  "icon": "icon.png",
   "displayName": "JDS Language Support",
-  "description": "Syntax highlighting and snippets for JDS language",
-  "version": "0.1.0",
+  "description": "Syntax highlighting, snippets, and execution for JDS language",
+  "version": "0.2.0",
+  "publisher": "AnDenL",
   "engines": {
     "vscode": "^1.60.0"
   },
   "categories": [
     "Programming Languages"
+  ],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onLanguage:jds"
   ],
   "contributes": {
     "languages": [
@@ -15,7 +21,11 @@
         "id": "jds",
         "aliases": ["JDS", "jds"],
         "extensions": [".jds"],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icon.png",
+          "dark": "./icon.png"
+        }
       }
     ],
     "grammars": [
@@ -24,6 +34,39 @@
         "scopeName": "source.jds",
         "path": "./syntaxes/jds.tmLanguage.json"
       }
-    ]
+    ],
+    "commands": [
+      {
+        "command": "jds.build",
+        "title": "JDS: Build File",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "jds.run",
+        "title": "JDS: Run Project",
+        "icon": "$(play)"
+      }
+    ],
+    "iconThemes": [
+      {
+        "id": "jds-icons",
+        "label": "JDS Icon Theme",
+        "path": "./jds-icons.json"
+      }
+    ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "jds.run",
+          "when": "resourceLangId == jds",
+          "group": "navigation@1"
+        },
+        {
+          "command": "jds.build",
+          "when": "resourceLangId == jds",
+          "group": "navigation@2"
+        }
+      ]
+    }
   }
 }

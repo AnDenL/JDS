@@ -1,0 +1,10 @@
+{
+  "iconDefinitions": {
+    "jds_icon": {
+      "iconPath": "./icons/jds-file.png"
+    }
+  },
+  "fileExtensions": {
+    "jds": "jds_icon"
+  }
+}
